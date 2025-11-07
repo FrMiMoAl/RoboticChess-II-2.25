@@ -52,6 +52,22 @@
     ul.clean{margin:10px 0 0 0;padding-left:18px}
     ul.clean li{margin:6px 0}
 
+    /* --- TIMELINE / ABOUT --- */
+    .about{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:center}
+    @media(max-width:900px){.about{grid-template-columns:1fr}}
+    .about .photo img{width:100%;height:100%;max-height:380px;object-fit:cover;border-radius:14px;border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow)}
+
+    .timeline{display:grid;gap:16px;grid-template-columns:1fr}
+    @media(min-width:960px){.timeline{grid-template-columns:repeat(3,1fr)}}
+    .stage{position:relative;border-radius:18px;padding:16px;background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow), inset 0 0 0 1px rgba(255,255,255,.02)}
+    .stage .stage-head span{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.95}
+    .stage.past{--accent:#98a2b3;box-shadow:var(--shadow), inset 6px 0 0 var(--accent)}
+    .stage.present{--accent:var(--acc);box-shadow:var(--shadow), inset 6px 0 0 var(--accent)}
+    .stage.future{--accent:var(--acc2);box-shadow:var(--shadow), inset 6px 0 0 var(--accent)}
+    .stage .stage-head span{color:var(--accent)}
+    .stage h4{margin:.25rem 0 .5rem}
+    .stage ul.clean{margin-top:.5rem}
+
     /* --- GALLERY --- */
     .gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
     @media (min-width:800px){.gallery{grid-template-columns:repeat(4,1fr)}}
@@ -87,7 +103,6 @@
         <a href="#hacemos">Qué hacemos</a>
         <a href="#queremos">Qué queremos hacer</a>
         <a href="#galeria">Galería</a>
-        <a href="#materiales">Materiales</a>
         <a href="#contacto">Contacto</a>
       </div>
     </div>
@@ -121,99 +136,58 @@
 
   <!-- QUIÉNES SOMOS -->
   <section id="quienes" class="reveal">
-    <div class="card">
-      <span class="pill">Sobre el equipo</span>
-      <h3>Quiénes somos</h3>
-      <p>Somos un equipo de estudiantes y entusiastas de robótica que impulsa <b>Robotic Chess</b>, un proyecto educativo para aprender <b>ROS 2</b>, <b>diseño de PCB</b> y <b>visión por computadora</b> a través de un brazo robótico que juega ajedrez.</p>
+    <div class="card about">
+      <div class="photo">
+        <img src="assets/quienes.jpg" alt="Equipo Robotic Chess" />
+      </div>
+      <div class="text">
+        <span class="pill">Sobre el equipo</span>
+        <h3>Quiénes somos</h3>
+        <p>Somos un equipo de estudiantes y entusiastas de robótica que impulsa <b>Robotic Chess</b>, un proyecto educativo para aprender <b>ROS 2</b>, <b>diseño de PCB</b> y <b>visión por computadora</b> a través de un brazo robótico que juega ajedrez.</p>
+        <p style="color:var(--muted)">Sube aquí una foto del equipo o del montaje (<code>assets/quienes.jpg</code>).</p>
+      </div>
     </div>
   </section>
 
   <!-- QUÉ HICIMOS -->
-  <section id="hicimos" class="reveal">
-    <div class="grid grid-3">
-      <div class="card">
-        <span class="pill">2024–2025</span>
-        <h3>Trabajo con KUKA + ROS 2</h3>
-        <ul class="clean">
-          <li>Integración y pruebas en ROS 2.</li>
-          <li>Captura y registro de posiciones por puerto serie.</li>
-          <li>Validación del flujo para tablero de ajedrez.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="pill">PCB modulares</span>
-        <h3>Rediseño de electrónica</h3>
-        <ul class="clean">
-          <li>Placas <b>doble cara</b> y <b>modulares</b> para facilitar mejoras.</li>
-          <li>Facilitamos revisión de errores y sustitución de módulos.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="pill">Kit educativo</span>
-        <h3>Modelo de bracito robótico</h3>
-        <ul class="clean">
-          <li>Prototipo de brazo para prácticas de ROS 2.</li>
-          <li>Documentación del pipeline: hardware → drivers → nodos.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+  
 
   <!-- QUÉ HACEMOS (hoy) -->
-  <section id="hacemos" class="reveal">
-    <div class="grid grid-3">
-      <div class="card">
-        <span class="pill">Ahora</span>
-        <h3>Consolidación del kit</h3>
-        <ul class="clean">
-          <li>Ensambles repetibles y checklist de calidad.</li>
-          <li>Firmware y nodos ROS 2 mínimos funcionales.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="pill">Tablero</span>
-        <h3>Registro de jugadas</h3>
-        <ul class="clean">
-          <li>Serial logger que guarda posiciones del tablero diseñado.</li>
-          <li>Exportación de CSV para análisis posterior.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <span class="pill">Comunidad</span>
-        <h3>Divulgación</h3>
-        <ul class="clean">
-          <li>Demostraciones y talleres cortos.</li>
-          <li>Guías introductorias de ROS 2 y electrónica.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+  
 
   <!-- QUÉ QUEREMOS HACER (futuro) -->
-  <section id="queremos" class="reveal">
-    <div class="grid grid-3">
-      <div class="card">
-        <span class="pill">Visión + IA</span>
-        <h3>Lectura óptima del tablero</h3>
+  
+
+  <!-- RUTA (Pasado, Presente, Futuro) -->
+  <section id="ruta" class="reveal">
+    <div class="card" style="background:transparent;border:0;box-shadow:none;padding:0">
+      <span class="pill">Ruta del proyecto</span>
+      <h3>Pasado, presente y futuro</h3>
+    </div>
+    <div class="timeline">
+      <div id="hicimos" class="stage past">
+        <div class="stage-head"><span>Pasado</span><h4>Qué hicimos</h4></div>
         <ul class="clean">
-          <li>Insertar cámara y pipeline de visión inspirado en IA.</li>
-          <li>Detección robusta de piezas y casillas.</li>
+          <li><b>Trabajo con KUKA + ROS 2:</b> integración y pruebas; captura y registro de posiciones por puerto serie; validación del flujo para el tablero.</li>
+          <li><b>PCB modulares:</b> rediseño de placas doble cara para facilitar mejoras y revisión de errores.</li>
+          <li><b>Kit educativo:</b> prototipo de brazo para prácticas de ROS 2 y documentación del pipeline (hardware → drivers → nodos).</li>
         </ul>
       </div>
-      <div class="card">
-        <span class="pill">Hardware propio</span>
-        <h3>Brazo robótico propio</h3>
+      <div id="hacemos" class="stage present">
+        <div class="stage-head"><span>Presente</span><h4>Qué hacemos</h4></div>
         <ul class="clean">
-          <li>Diseñar nuestro brazo para no depender del KUKA.</li>
-          <li>Optimizado para docencia y mantenimiento.</li>
+          <li><b>Consolidación del kit:</b> ensambles repetibles y checklist de calidad.</li>
+          <li><b>Software base:</b> firmware y nodos ROS 2 mínimos funcionales.</li>
+          <li><b>Tablero:</b> logger serial que guarda posiciones del tablero y exporta CSV.</li>
+          <li><b>Comunidad:</b> demos y guías introductorias de ROS 2 y electrónica.</li>
         </ul>
       </div>
-      <div class="card">
-        <span class="pill">Eventos</span>
-        <h3>Torneo y comunidad</h3>
+      <div id="queremos" class="stage future">
+        <div class="stage-head"><span>Futuro</span><h4>Qué queremos hacer</h4></div>
         <ul class="clean">
-          <li>Organizar torneo de ajedrez con el brazo.</li>
-          <li>Publicar avances y paquetes de aprendizaje.</li>
+          <li><b>Visión + IA:</b> insertar cámara y pipeline de visión inspirado en IA para lectura óptima del tablero.</li>
+          <li><b>Hardware propio:</b> diseñar nuestro brazo para no depender del KUKA (optimizado para docencia y mantenimiento).</li>
+          <li><b>Comunidad:</b> organizar torneo de ajedrez y publicar paquetes de aprendizaje.</li>
         </ul>
       </div>
     </div>
@@ -266,22 +240,6 @@
         <figure><img src="assets/foto2.jpg" alt="PCB doble cara"/><figcaption>PCB doble cara</figcaption></figure>
         <figure><img src="assets/foto3.jpg" alt="Kit educativo brazo"/><figcaption>Kit educativo</figcaption></figure>
         <figure><img src="assets/foto4.jpg" alt="Pruebas de tablero"/><figcaption>Pruebas tablero</figcaption></figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- MATERIALES: PDF / SLIDES -->
-  <section id="materiales" class="reveal">
-    <div class="card">
-      <span class="pill">Materiales</span>
-      <h3>Presentación y documentos</h3>
-      <div class="slides">
-        <!-- Si conviertes tu PDF a imágenes, también puedes mostrarlas aquí. -->
-        <iframe src="assets/SCE-2-2025-Proyectos.pdf" title="Presentación SCE-2-2025"></iframe>
-        <div class="download">
-          <a class="btn" href="assets/SCE-2-2025-Proyectos.pdf" download>Descargar PDF</a>
-          <a class="btn ghost" href="#inicio">Volver arriba</a>
-        </div>
       </div>
     </div>
   </section>
