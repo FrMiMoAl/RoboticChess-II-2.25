@@ -1,41 +1,315 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi Presentación de Canva</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Robotic Chess – Proyecto 2025</title>
+  <meta name="description" content="Kit educativo de brazo robótico con ROS 2 para jugar ajedrez y aprender robótica, visión y PCB." />
   <style>
-    body {
-      background: #121212;
-      color: white;
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 20px;
+    :root{
+      --bg:#0b0f14;--bg2:#0e141b;--card:#111827;--card2:#0c1220;--muted:#93a1b2;--txt:#e8edf4;--acc:#59e0d3;--acc2:#8ed1ff;--ring:#2dd4bf;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
     }
-    video, embed, img {
-      max-width: 90%;
-      border-radius: 12px;
-      margin-top: 20px;
-      box-shadow: 0 0 15px rgba(255,255,255,0.1);
-    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--txt);font:15.5px/1.6 system-ui,Segoe UI,Roboto,Arial}
+    a{color:var(--acc)}
+    img,video{max-width:100%;display:block}
+    /* --- NAV --- */
+    .nav{position:sticky;top:0;z-index:20;background:rgba(11,15,20,.6);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;max-width:1100px;margin:auto}
+    .brand{display:flex;gap:10px;align-items:center}
+    .brand .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));box-shadow:0 0 0 3px rgba(45,212,191,.2)}
+    .brand h1{font-size:16px;margin:0;font-weight:700;letter-spacing:.2px}
+    .menu{display:flex;gap:14px;flex-wrap:wrap}
+    .menu a{padding:8px 10px;border-radius:10px;color:var(--txt);text-decoration:none}
+    .menu a:hover{background:rgba(255,255,255,.06)}
+
+    /* --- HERO --- */
+    .hero{max-width:1100px;margin:28px auto;padding:0 16px 8px;display:grid;gap:20px}
+    .hero-card{background:radial-gradient(1200px 300px at 20% -50%,rgba(94,234,212,.18),transparent 40%),linear-gradient(180deg,var(--card),var(--card2));border:1px solid rgba(255,255,255,.08);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
+    .hero-top{display:grid;grid-template-columns:1.1fr .9fr;gap:10px;padding:14px}
+    .hero video,.hero iframe{width:100%;aspect-ratio:16/9;border-radius:14px;border:0;box-shadow:0 6px 20px rgba(0,0,0,.35)}
+    .hero h2{margin:6px 0 8px;font-size:28px}
+    .hero p{color:var(--muted);margin:0}
+    .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+    .kpi{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px}
+    .kpi b{display:block;font-size:18px}
+
+    /* --- SECTIONS --- */
+    section{max-width:1100px;margin:32px auto;padding:0 16px}
+    .grid{display:grid;gap:16px}
+    @media (min-width:920px){.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .card{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
+    .card h3{margin:6px 0 8px}
+    .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12.5px;color:var(--muted)}
+    ul.clean{margin:10px 0 0 0;padding-left:18px}
+    ul.clean li{margin:6px 0}
+
+    /* --- GALLERY --- */
+    .gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    @media (min-width:800px){.gallery{grid-template-columns:repeat(4,1fr)}}
+    .gallery figure{margin:0;position:relative}
+    .gallery img{width:100%;height:160px;object-fit:cover;border-radius:12px;border:1px solid rgba(255,255,255,.08)}
+    .gallery figcaption{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,.45);padding:4px 8px;border-radius:8px;font-size:12px}
+
+    /* --- SLIDES --- */
+    .slides{display:grid;grid-template-columns:1fr;gap:12px}
+    .slides iframe{width:100%;aspect-ratio:4/3;border:0;border-radius:12px}
+    .download{display:flex;gap:10px;flex-wrap:wrap}
+
+    /* --- CTA / FOOTER --- */
+    .cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+    .btn{display:inline-block;padding:10px 14px;border-radius:12px;text-decoration:none;color:#001016;background:linear-gradient(180deg,var(--acc),var(--acc2));font-weight:700;border:0}
+    .btn.ghost{background:transparent;color:var(--txt);border:1px solid rgba(255,255,255,.18)}
+    footer{margin:40px 0 30px;color:var(--muted);text-align:center}
+
+    /* --- tiny animations --- */
+    .reveal{opacity:0;transform:translateY(8px);transition:all .6s cubic-bezier(.2,.8,.2,1)}
+    .reveal.on{opacity:1;transform:none}
   </style>
 </head>
 <body>
-  <h1>Mi Presentación</h1>
-  <p>Esta es una versión web de mi presentación hecha en Canva.</p>
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="wrap">
+      <div class="brand"><span class="dot"></span><h1>Robotic Chess</h1></div>
+      <div class="menu">
+        <a href="#inicio">Inicio</a>
+        <a href="#quienes">Quiénes somos</a>
+        <a href="#hicimos">Qué hicimos</a>
+        <a href="#hacemos">Qué hacemos</a>
+        <a href="#queremos">Qué queremos hacer</a>
+        <a href="#galeria">Galería</a>
+        <a href="#materiales">Materiales</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+    </div>
+  </nav>
 
-  <!-- Si tienes un video -->
-  <video src="sce-2-2025-proyectos_lDg4pIKe.mp4" controls autoplay></video>
+  <!-- HERO -->
+  <header id="inicio" class="hero">
+    <div class="hero-card reveal">
+      <div class="hero-top">
+        <div>
+          <!-- Video principal (usa el que ya tienes cargado) -->
+          <video controls autoplay muted playsinline loop poster="assets/poster.jpg">
+            <source src="assets/sce-2-2025-proyectos_lDg4pIKe.mp4" type="video/mp4" />
+            <source src="sce-2-2025-proyectos_lDg4pIKe.mp4" type="video/mp4" />
+            Tu navegador no soporta video HTML5.
+          </video>
+        </div>
+        <div>
+          <h2>Kit educativo de brazo robótico con ROS 2 para ajedrez</h2>
+          <p>Aprendemos robótica, visión y electrónica mientras construimos un flujo completo: modelado del brazo, PCB modulares, ROS 2 y registro de jugadas por puerto serie.</p>
+          <div class="kpis">
+            <div class="kpi"><b>2025</b><span>versión actual del proyecto</span></div>
+            <div class="kpi"><b>ROS 2</b><span>pipeline de nodos y drivers</span></div>
+            <div class="kpi"><b>PCB</b><span>diseño doble cara y modular</span></div>
+            <div class="kpi"><b>IA</b><span>visión para leer el tablero</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-  <!-- O si prefieres mostrar un PDF -->
-  <!-- <embed src="assets/presentacion.pdf" type="application/pdf" width="100%" height="600px" /> -->
+  <!-- QUIÉNES SOMOS -->
+  <section id="quienes" class="reveal">
+    <div class="card">
+      <span class="pill">Sobre el equipo</span>
+      <h3>Quiénes somos</h3>
+      <p>Somos un equipo de estudiantes y entusiastas de robótica que impulsa <b>Robotic Chess</b>, un proyecto educativo para aprender <b>ROS 2</b>, <b>diseño de PCB</b> y <b>visión por computadora</b> a través de un brazo robótico que juega ajedrez.</p>
+    </div>
+  </section>
 
-  <!-- Puedes agregar imágenes -->
-  <h2>Galería</h2>
-  <img src="assets/foto1.jpg" alt="Foto 1">
-  <img src="assets/foto2.jpg" alt="Foto 2">
+  <!-- QUÉ HICIMOS -->
+  <section id="hicimos" class="reveal">
+    <div class="grid grid-3">
+      <div class="card">
+        <span class="pill">2024–2025</span>
+        <h3>Trabajo con KUKA + ROS 2</h3>
+        <ul class="clean">
+          <li>Integración y pruebas en ROS 2.</li>
+          <li>Captura y registro de posiciones por puerto serie.</li>
+          <li>Validación del flujo para tablero de ajedrez.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill">PCB modulares</span>
+        <h3>Rediseño de electrónica</h3>
+        <ul class="clean">
+          <li>Placas <b>doble cara</b> y <b>modulares</b> para facilitar mejoras.</li>
+          <li>Facilitamos revisión de errores y sustitución de módulos.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill">Kit educativo</span>
+        <h3>Modelo de bracito robótico</h3>
+        <ul class="clean">
+          <li>Prototipo de brazo para prácticas de ROS 2.</li>
+          <li>Documentación del pipeline: hardware → drivers → nodos.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUÉ HACEMOS (hoy) -->
+  <section id="hacemos" class="reveal">
+    <div class="grid grid-3">
+      <div class="card">
+        <span class="pill">Ahora</span>
+        <h3>Consolidación del kit</h3>
+        <ul class="clean">
+          <li>Ensambles repetibles y checklist de calidad.</li>
+          <li>Firmware y nodos ROS 2 mínimos funcionales.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill">Tablero</span>
+        <h3>Registro de jugadas</h3>
+        <ul class="clean">
+          <li>Serial logger que guarda posiciones del tablero diseñado.</li>
+          <li>Exportación de CSV para análisis posterior.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill">Comunidad</span>
+        <h3>Divulgación</h3>
+        <ul class="clean">
+          <li>Demostraciones y talleres cortos.</li>
+          <li>Guías introductorias de ROS 2 y electrónica.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUÉ QUEREMOS HACER (futuro) -->
+  <section id="queremos" class="reveal">
+    <div class="grid grid-3">
+      <div class="card">
+        <span class="pill">Visión + IA</span>
+        <h3>Lectura óptima del tablero</h3>
+        <ul class="clean">
+          <li>Insertar cámara y pipeline de visión inspirado en IA.</li>
+          <li>Detección robusta de piezas y casillas.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill">Hardware propio</span>
+        <h3>Brazo robótico propio</h3>
+        <ul class="clean">
+          <li>Diseñar nuestro brazo para no depender del KUKA.</li>
+          <li>Optimizado para docencia y mantenimiento.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill">Eventos</span>
+        <h3>Torneo y comunidad</h3>
+        <ul class="clean">
+          <li>Organizar torneo de ajedrez con el brazo.</li>
+          <li>Publicar avances y paquetes de aprendizaje.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONVOCATORIA / REQUISITOS & OBJETIVOS (desde tus slides) -->
+  <section class="reveal">
+    <div class="card">
+      <span class="pill">Convocatoria</span>
+      <h3>Requisitos y Objetivos</h3>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+        <div>
+          <h4>Requisitos</h4>
+          <ul class="clean">
+            <li>Responsabilidad</li>
+            <li>Tiempo</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Objetivos</h4>
+          <ul class="clean">
+            <li>Finalización del proyecto</li>
+            <li>Corrección de placas PCB</li>
+            <li>Unión de subsistemas</li>
+            <li>Organización de torneo de ajedrez</li>
+          </ul>
+        </div>
+        <div>
+          <h4>¿Por qué formar parte?</h4>
+          <ul class="clean">
+            <li>Conocimiento</li>
+            <li>Aprender ROS</li>
+            <li>Aprender visión</li>
+            <li>Diseño CAD</li>
+            <li>Diseño de PCB</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERÍA -->
+  <section id="galeria" class="reveal">
+    <div class="card">
+      <span class="pill">Fotos del proyecto</span>
+      <h3>Galería</h3>
+      <p class="muted">Sube tus imágenes a <code>assets/</code> y reemplaza los <i>src</i> de ejemplo. Mantén nombres simples: <code>foto1.jpg</code>, <code>kuka_ros2.jpg</code>, <code>pcb_doble_cara.jpg</code>, etc.</p>
+      <div class="gallery">
+        <figure><img src="assets/foto1.jpg" alt="KUKA con ROS 2"/><figcaption>KUKA + ROS 2</figcaption></figure>
+        <figure><img src="assets/foto2.jpg" alt="PCB doble cara"/><figcaption>PCB doble cara</figcaption></figure>
+        <figure><img src="assets/foto3.jpg" alt="Kit educativo brazo"/><figcaption>Kit educativo</figcaption></figure>
+        <figure><img src="assets/foto4.jpg" alt="Pruebas de tablero"/><figcaption>Pruebas tablero</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- MATERIALES: PDF / SLIDES -->
+  <section id="materiales" class="reveal">
+    <div class="card">
+      <span class="pill">Materiales</span>
+      <h3>Presentación y documentos</h3>
+      <div class="slides">
+        <!-- Si conviertes tu PDF a imágenes, también puedes mostrarlas aquí. -->
+        <iframe src="assets/SCE-2-2025-Proyectos.pdf" title="Presentación SCE-2-2025"></iframe>
+        <div class="download">
+          <a class="btn" href="assets/SCE-2-2025-Proyectos.pdf" download>Descargar PDF</a>
+          <a class="btn ghost" href="#inicio">Volver arriba</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA / CONTACTO -->
+  <section id="contacto" class="reveal">
+    <div class="card">
+      <span class="pill">Súmate</span>
+      <h3>¿Te interesa colaborar o apoyar?</h3>
+      <div class="cta">
+        <a class="btn" href="mailto:equipo.robotic.chess@example.com?subject=Quiero%20sumarme%20a%20Robotic%20Chess">Quiero sumarme</a>
+        <a class="btn ghost" href="https://t.me/+placeholder" target="_blank" rel="noopener">Canal / Chat</a>
+      </div>
+      <p style="margin-top:8px;color:var(--muted)">También podemos organizar una demo corta en tu curso o evento.</p>
+    </div>
+  </section>
+
+  <footer>
+    <small>© 2025 Robotic Chess. Hecho con ❤️ para aprender y compartir.</small>
+  </footer>
+
+  <script>
+    // Smooth scroll (por si se pega en algún host)
+    document.querySelectorAll('.menu a').forEach(a=>{
+      a.addEventListener('click',e=>{
+        const id = a.getAttribute('href');
+        if(id.startsWith('#')){e.preventDefault();document.querySelector(id)?.scrollIntoView({behavior:'smooth'});}
+      });
+    });
+    // Revelar al hacer scroll
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(en=>{if(en.isIntersecting){en.target.classList.add('on');io.unobserve(en.target);}})
+    },{threshold:.1});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  </script>
 </body>
 </html>
-
-
