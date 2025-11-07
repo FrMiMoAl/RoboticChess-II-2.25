@@ -7,12 +7,16 @@
   <meta name="description" content="Kit educativo de brazo robótico con ROS 2 para jugar ajedrez y aprender robótica, visión y PCB." />
   <style>
     :root{
-      --bg:#0b0f14;--bg2:#0e141b;--card:#111827;--card2:#0c1220;--muted:#93a1b2;--txt:#e8edf4;--acc:#59e0d3;--acc2:#8ed1ff;--ring:#2dd4bf;
+      /* Paleta inspirada en KUKA */
+      --bg:#0b0e12;--bg2:#0a0c10;--card:#111418;--card2:#0c0f14;--muted:#b2bdc7;--txt:#eef2f6;
+      --acc:#ff6a00;         /* KUKA orange */
+      --acc2:#ff9a3c;        /* degradado cálido */
+      --ring:#ff6a00;
       --shadow:0 10px 30px rgba(0,0,0,.35);
     }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--txt);font:15.5px/1.6 system-ui,Segoe UI,Roboto,Arial}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--txt);font:15.5px/1.6 system-ui,Segoe UI,Roboto,Arial;overflow-x:hidden}
     a{color:var(--acc)}
     img,video{max-width:100%;display:block}
     /* --- NAV --- */
@@ -26,10 +30,12 @@
     .menu a:hover{background:rgba(255,255,255,.06)}
 
     /* --- HERO --- */
-    .hero{max-width:1100px;margin:28px auto;padding:0 16px 8px;display:grid;gap:20px}
-    .hero-card{background:radial-gradient(1200px 300px at 20% -50%,rgba(94,234,212,.18),transparent 40%),linear-gradient(180deg,var(--card),var(--card2));border:1px solid rgba(255,255,255,.08);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
-    .hero-top{display:grid;grid-template-columns:1.1fr .9fr;gap:10px;padding:14px}
-    .hero video,.hero iframe{width:100%;aspect-ratio:16/9;border-radius:14px;border:0;box-shadow:0 6px 20px rgba(0,0,0,.35)}
+    .hero{max-width:none;margin:0;padding:0;display:block}
+    .hero-card{background:transparent;border:0;border-radius:0;box-shadow:none;overflow:hidden}
+    .hero-top{display:grid;grid-template-columns:1fr;gap:0;padding:0}
+    .hero video,.hero iframe{width:100vw;height:calc(100vh - 64px);max-height:92vh;border-radius:0;border:0;box-shadow:none;object-fit:cover}
+    @media (max-width:768px){.hero video,.hero iframe{height:70vh}}
+    .hero-info{max-width:1100px;margin:16px auto 8px;padding:0 16px}
     .hero h2{margin:6px 0 8px;font-size:28px}
     .hero p{color:var(--muted);margin:0}
     .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
@@ -99,7 +105,7 @@
             Tu navegador no soporta video HTML5.
           </video>
         </div>
-        <div>
+        <div class="hero-info">
           <h2>Kit educativo de brazo robótico con ROS 2 para ajedrez</h2>
           <p>Aprendemos robótica, visión y electrónica mientras construimos un flujo completo: modelado del brazo, PCB modulares, ROS 2 y registro de jugadas por puerto serie.</p>
           <div class="kpis">
